@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlexJobs Overview</title>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --panel: rgba(255, 252, 247, 0.9);
+      --panel-strong: #fffdf8;
+      --ink: #1d2433;
+      --muted: #5b6475;
+      --line: rgba(29, 36, 51, 0.12);
+      --accent: #0f766e;
+      --accent-soft: rgba(15, 118, 110, 0.12);
+      --gold: #c9871a;
+      --gold-soft: rgba(201, 135, 26, 0.14);
+      --rose: #b4534f;
+      --rose-soft: rgba(180, 83, 79, 0.12);
+      --shadow: 0 22px 54px rgba(40, 37, 31, 0.10);
+      --radius: 20px;
+      --radius-sm: 14px;
+      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --sans: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(201, 135, 26, 0.14), transparent 24%),
+        linear-gradient(180deg, #fcfaf6 0%, var(--bg) 100%);
+    }
+
+    a { color: inherit; }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,0.88), rgba(255,250,240,0.88));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1;
+    }
+
+    .hero p {
+      margin: 14px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .stat {
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+
+    .stat-label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-value {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 0.75fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .control,
+    .toggle {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      box-shadow: 0 10px 26px rgba(40, 37, 31, 0.05);
+    }
+
+    .control-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .control input,
+    .control select {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 15px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+    }
+
+    .result-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .job-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 14px 36px rgba(40, 37, 31, 0.07);
+    }
+
+    .job-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .job-id {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .job-title {
+      margin: 0;
+      font-size: 1.25rem;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .job-company {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .score-pill {
+      min-width: 68px;
+      padding: 12px 10px;
+      border-radius: 999px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      background: var(--gold-soft);
+      color: #764b00;
+    }
+
+    .score-pill.high {
+      background: var(--accent-soft);
+      color: #085d56;
+    }
+
+    .score-pill.low {
+      background: var(--rose-soft);
+      color: #8b2d2a;
+    }
+
+    .meta {
+      margin: 14px 0 0;
+      color: var(--ink);
+      font-size: 0.96rem;
+      line-height: 1.5;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: rgba(29, 36, 51, 0.06);
+      color: var(--ink);
+    }
+
+    .tag.remote {
+      background: var(--accent-soft);
+      color: #085d56;
+    }
+
+    .tag.hybrid {
+      background: var(--gold-soft);
+      color: #7b4e00;
+    }
+
+    .tag.apply {
+      background: rgba(45, 98, 171, 0.12);
+      color: #274b83;
+    }
+
+    .tag.status {
+      background: rgba(112, 71, 168, 0.12);
+      color: #5d3691;
+    }
+
+    .fit-reason,
+    .summary {
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .fit-reason strong,
+    .summary strong {
+      color: var(--ink);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .button.primary {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .empty {
+      background: var(--panel);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .stats,
+      .controls,
+      .jobs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 20px 14px 40px;
+      }
+
+      .hero,
+      .job-card {
+        padding: 18px;
+      }
+
+      .job-card-top {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">FlexJobs Snapshot</p>
+      <h1>All saved jobs in one simple page.</h1>
+      <p>
+        Generated on 2026-03-28 04:29. Use the search and filters below to narrow the list by keyword,
+        score, remote status, or whether the job already has a direct apply link.
+      </p>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <section class="controls">
+      <label class="control">
+        <span class="control-label">Search</span>
+        <input id="searchInput" type="text" placeholder="Title, company, location, or fit reason">
+      </label>
+
+      <label class="control">
+        <span class="control-label">Minimum Score</span>
+        <select id="minScore">
+          <option value="">All scores</option>
+          <option value="90">90 and up</option>
+          <option value="80">80 and up</option>
+          <option value="70">70 and up</option>
+          <option value="60">60 and up</option>
+        </select>
+      </label>
+
+      <label class="control">
+        <span class="control-label">Sort By</span>
+        <select id="sortBy">
+          <option value="score">Best score</option>
+          <option value="recent">Most recent</option>
+          <option value="company">Company A-Z</option>
+          <option value="title">Title A-Z</option>
+        </select>
+      </label>
+
+      <div>
+        <label class="toggle">
+          <input id="remoteOnly" type="checkbox">
+          <span>Remote only</span>
+        </label>
+        <label class="toggle" style="margin-top: 12px;">
+          <input id="applyOnly" type="checkbox">
+          <span>Has apply link</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="result-bar">
+      <div id="resultCount"></div>
+      <div>Open the links directly from each job card.</div>
+    </section>
+
+    <section class="jobs-grid" id="jobsGrid"></section>
+    <section class="empty" id="emptyState" hidden>No jobs match the current filters.</section>
+  </main>
+
+  <script id="jobs-data" type="application/json">[{"id": 22, "title": "Internal Auditor", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "2 weeks ago", "score": 61.0, "fitReason": "title partially matches 'Senior Auditor'; experience overlap: Internal audit; remote or hybrid work signal detected", "status": "discovered", "applicationStatus": "applied", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=d8510970-a52b-4c28-9744-a0d2c4a9d0b3&matchId=0ba845b7-3915-442e-9cd6-a254e414ee89&score=344.30997", "applicationUrl": "https://jobs.ashbyhq.com/supabase/349134f8-331d-4012-82a2-0b95d407b5bf", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Design and implement internal audit programs that scale with our rapid growth, identifying gaps and driving process improvements. Partner with external auditors to facilitate smooth audits and ensure timely completion...", "remoteBucket": "remote", "discoveredAt": "2026-03-24 09:47:46"}, {"id": 99, "title": "Senior SW Engineer - AI Products", "company": "hireVouch", "location": "100% Remote", "salaryText": "150,000 - 200,000 CAD Annually", "postedAt": "30+ days ago", "score": 42.0, "fitReason": "title partially matches 'Senior Auditor'; remote or hybrid work signal detected; seniority matches profile", "status": "discovered", "applicationStatus": "", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=28121eb7-31e4-4838-8f4a-2eba8253e307&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "", "hasApplyUrl": false, "isExpertApply": false, "hasDetails": false, "summary": "", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 103, "title": "Senior Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": 42.0, "fitReason": "title partially matches 'Senior Auditor'; remote or hybrid work signal detected; seniority matches profile", "status": "discovered", "applicationStatus": "", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=ff3e053c-4846-4aaf-b48d-1dde9e502c9a&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "", "hasApplyUrl": false, "isExpertApply": false, "hasDetails": false, "summary": "", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 85, "title": "Venture Capital Partnerships Lead", "company": "Supabase", "location": "San Francisco, CA", "salaryText": "", "postedAt": "2 weeks ago", "score": 18.0, "fitReason": "remote or hybrid work signal detected; seniority matches profile", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=dfea2b39-4ac0-4cdf-a7fe-4e21933f2d53&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/f7e9e4f4-6fcf-44ae-a5a9-958706259e99", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Manage relationships with top-tier venture capital firms, develop partnership strategies for portfolio companies, and lead initiatives that drive engagement and adoption of the platform among startups in the ecosystem...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 89, "title": "React Native Developer", "company": "LG Electronics", "location": "San Francisco, CA, Santa Clara, CA", "salaryText": "75.00 - 95.00 USD Hourly", "postedAt": "3 days ago", "score": 10.0, "fitReason": "remote or hybrid work signal detected", "status": "discovered", "applicationStatus": "", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=b3a5a1ea-76e8-4da9-825c-00ffa1372d9f&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "", "hasApplyUrl": false, "isExpertApply": false, "hasDetails": false, "summary": "", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 96, "title": "Director of Technical Operations", "company": "Aesthetix CRM", "location": "US National", "salaryText": "", "postedAt": "11 days ago", "score": 10.0, "fitReason": "remote or hybrid work signal detected", "status": "discovered", "applicationStatus": "", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=afe2f649-e68b-4c47-bf23-41ec4ef035ad&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "", "hasApplyUrl": false, "isExpertApply": false, "hasDetails": false, "summary": "", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 98, "title": "Founding Engineer", "company": "Conscious Talent", "location": "US National", "salaryText": "150,000 - 250,000 USD Annually", "postedAt": "30+ days ago", "score": 10.0, "fitReason": "remote or hybrid work signal detected", "status": "discovered", "applicationStatus": "", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=c07c8cbe-2525-4fa9-ae7f-6523eb1cd782&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "", "hasApplyUrl": false, "isExpertApply": false, "hasDetails": false, "summary": "", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 112, "title": "AI Automation Solution Architect - Strategic Business Consultant", "company": "Proactive Technology Management", "location": "Ferndale, MI", "salaryText": "", "postedAt": "30+ days ago", "score": 10.0, "fitReason": "remote or hybrid work signal detected", "status": "discovered", "applicationStatus": "", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=f3e32caf-6416-4ad5-8385-359bd220a0f2&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "", "hasApplyUrl": false, "isExpertApply": false, "hasDetails": false, "summary": "", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 67, "title": "Platform Engineer - General Compute", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": 10.0, "fitReason": "remote or hybrid work signal detected", "status": "discovered", "applicationStatus": "", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=9cadeadc-025d-4885-96fa-f5ed952cc1e2&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "", "hasApplyUrl": false, "isExpertApply": false, "hasDetails": false, "summary": "", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 88, "title": "Platform Engineer, Data", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=01fa82e9-21ee-4f45-920d-e4766dc46d0e&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/9073c0cd-2545-473a-b2ac-63e4615c69b5", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Improve system observability with metrics, logging, tracing, and profiling. Contribute to our CI/CD and release processes to ship safely and quickly. Partner with product teams to deliver features end-to-end, from des...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 87, "title": "Product Marketing Manager", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=d15ff357-d9c7-447c-a565-d025d4448f49&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/7c1d5022-7a96-4e62-85e9-f5d586b6d34b", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Product Marketing Manager Location Remote Employment Type Full time Location Type Remote Department Growth Supabase is the Postgres development platform, built by developers for developers. We provide a complete backe...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 86, "title": "Head of Interfaces", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=c0bf7129-c777-481a-8a42-e218239d00c2&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/3cb7aab9-8cbe-411a-a5bd-5b524afdaf40", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Set and maintain clear roadmaps aligned with Product priorities, with consistent milestones and delivery. Drive hiring, onboarding, and career development across your teams. Roadmap hygiene, issue tracking, test cover...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 84, "title": "Infrastructure Engineer - Observability", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=b7c3fe5a-e60b-47a9-8362-1ffc137f492b&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/894139b0-cc52-4fe4-b84f-ab6660b517d0", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Infrastructure Engineer - Observability (APAC) Location APAC Employment Type Full time Location Type Remote Department Engineering OverviewApplication We are seeking a seasoned infrastructure operations expert that ha...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 83, "title": "Support Engineer", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=106fd9ce-43fd-4810-bf1f-28855c87af7b&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/142135ae-a15f-4ec7-90bb-cb4e7968bc09", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Provide timely responses to support inquiries, triage cases for resolution, monitor feedback channels, and identify opportunities for improving support efficiency through internal tooling development. Support Engineer...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 82, "title": "Support Engineer", "company": "Supabase", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=4a1abfa2-cc5a-4187-939c-c13635a2fbff&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/e4e3ccb7-7b7d-42a2-be0f-26cbb5ae4abd", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Provide timely responses to support inquiries, triage cases, monitor feedback channels, and identify internal tooling improvements to enhance support efficiency while collaborating with technical teams. Support Engine...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 81, "title": "Support Engineer", "company": "Supabase", "location": "Austria, Belgium, Denmark, Finland, France, Germany, Greece, Hungary, Ireland, Italy, Netherlands, Norway, Poland, Portugal, Romania, Spain, Sweden, Switzerland, United Kingdom", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=e5718763-d51a-4560-877b-88b4a4592cbb&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/c01f7436-1fdd-4a3e-8b96-8cadc33b006e", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Provide timely responses to support cases, triage inquiries, monitor feedback channels, and identify improvements for support efficiency while collaborating with technical teams to enhance user experience. Support Eng...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 80, "title": "Account Executive", "company": "Supabase", "location": "Austria, Belgium, Denmark, Finland, France, Germany, Greece, Hungary, Ireland, Italy, Netherlands, Norway, Poland, Portugal, Romania, Spain, Sweden, Switzerland, United Kingdom", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=ee4c470e-14c9-42f4-a7db-757e707b24af&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/a069c886-1107-408e-88b4-e1aa8d33d4bc", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Manage the full sales cycle, conduct technical discovery to align business outcomes, collaborate with engineers for product demos, and educate clients on integration within their tech stack to achieve revenue goals. A...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 79, "title": "Business Development Representative", "company": "Supabase", "location": "Austria, Belgium, Denmark, Finland, France, Germany, Greece, Hungary, Ireland, Italy, Netherlands, Norway, Poland, Portugal, Romania, Spain, Sweden, Switzerland, United Kingdom", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=ff0bdf02-c509-4157-9afc-0d4717b763c7&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/3d95b4f8-ac03-41bd-aca7-89b5e34bf532", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive top-of-funnel activity and partner with sales teams to qualify leads. Help customers understand technical architecture and enhance skills through mentorship, impacting growth from day one in a dynamic environmen...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 78, "title": "Enterprise Account Executive", "company": "Supabase", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=7d78d439-c1a4-4adf-bb4c-e881fc0a9f01&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/69d1b2ec-9d9b-45b0-937a-a8454f66487e", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Own a portfolio of high-value accounts, lead full-cycle sales, build relationships with senior stakeholders, and guide enterprise adoption of technical products to drive long-term growth and value creation. Enterprise...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 77, "title": "Postgres Engineer", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=f9a2c72f-49d5-43e8-b652-fc9be1bc1e7b&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/c16bd707-29f2-46fb-8409-7270ff00978b", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Maintain and enhance the stability and functionality of hosted PostgreSQL offerings by troubleshooting deployments, building extensions, and managing complex extension ecosystems while ensuring performance and compati...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 75, "title": "Customer Solution Architect", "company": "Supabase", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=3df9b4c7-1581-469a-8343-62962274a730&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/d5573afa-636c-4219-832f-386f498243bf", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive customer adoption by understanding technical requirements, designing tailored solutions, leading proof-of-value implementations, and providing ongoing support to optimize performance and ensure successful outcom...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 74, "title": "Customer Solution Architect", "company": "Supabase", "location": "Bulgaria, Croatia, Cyprus, Czechia, Egypt, Israel, Kenya, Lebanon, Luxembourg, Malta, Nigeria, Oman, Qatar, Romania, Saudi Arabia, Serbia, South Africa, United Arab Emirates, United Kingdom", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=1540fd61-dc12-4c06-ae70-2de52581094b&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/c3099780-60d5-4b8a-ab08-c701d114cf62", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive customer adoption by uncovering business requirements, designing technical solutions, leading proof-of-value implementations, and providing ongoing support to optimize performance and ensure successful platform...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 73, "title": "Customer Solution Architect", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=8850f16a-9beb-4c5d-9b99-5ec1708d0485&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/51c3a3a9-7539-47f3-82e7-b95958342e2c", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive customer engagement by uncovering business and technical requirements, designing tailored solutions, and leading proof-of-value implementations to ensure successful adoption and optimization of the platform for...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 72, "title": "Platform Engineer - Kubernetes", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=092d7ed2-29f0-44a2-a7a1-f621942606cb&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/bf46e5cf-526a-425c-951b-bf2a7f85bd9d", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Design and implement systems for provisioning and managing multi-region compute workloads, maintain Kubernetes operators for distributed deployments, and enhance automation and observability to ensure high availabilit...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 71, "title": "Developer Productivity Engineer", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=f2693642-12b8-48e8-9568-d4d0b627df10&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/4a7b66f8-9c95-4a60-8166-37dbb11d1446", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Enhance developer workflows and tooling, drive engineering excellence through metrics and automation, and ensure reliable CI/CD processes while collaborating with teams to optimize performance and eliminate bottleneck...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 70, "title": "Database Support Engineer", "company": "Supabase", "location": "Bulgaria, Croatia, Cyprus, Czechia, Egypt, Israel, Kenya, Lebanon, Luxembourg, Malta, Nigeria, Oman, Qatar, Romania, Saudi Arabia, Serbia, South Africa, United Arab Emirates, United Kingdom", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=dea786af-477e-48eb-bc2e-9f287bee3db5&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/3889002e-536e-4046-a330-70e942b0cc96", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Investigate and resolve complex database issues, provide consultative advice to optimize user workloads, and mentor junior team members to enhance overall support quality and product improvement based on user feedback...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 69, "title": "Database Support Engineer", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=7fa68c46-6d77-4b0d-ae77-e82616c8e00d&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/62945518-2468-4cf5-9f36-904b60f75183", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Investigate and resolve complex customer issues, provide proactive workload optimization advice, reproduce bugs with solid repro steps, and mentor junior team members to enhance support quality and improve product doc...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 68, "title": "Database Support Engineer", "company": "Supabase", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=a5f9b33e-d32a-4c5c-a6e2-6532eebf1a21&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/f18b1173-51c3-4ff6-bcda-89f8111931f4", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Investigate and resolve advanced customer issues, provide proactive workload optimization advice, reproduce and escalate bugs, and mentor junior team members to enhance support quality and developer experience. Databa...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 66, "title": "Multigres Engineer", "company": "Supabase", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=9990fb7a-db46-4b7a-bb8f-2223817e2a59&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/2e718684-4f75-4a99-8d6b-3b6bd44e4228", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Architect and implement distributed database infrastructure, including query routing logic, consensus systems, and materialization pipelines. Collaborate with teams to enhance database capabilities and contribute to o...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 114, "title": "Director of Engineering - AI Native", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=d88275a8-3d15-4bf4-81f6-8c4461aa51fe&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://boards.greenhouse.io/nerdy/jobs/7564842", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to deliver features during critical sales periods, drive platform simplification, and build high-performing teams while collaborating with cross-functional stakeholders to enhance overall busine...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 113, "title": "Strategic Customer Relationship AI Automation Manager", "company": "Bloomreach", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=3de3b894-c80d-4f21-ae4e-b6cfe6515fa8&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/bloomreach/jobs/7422343", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Redefine customer engagement using AI, accelerate the customer lifecycle, build insights tools for strategy, and innovate with cross-functional collaboration to enhance personalized customer relationships and satisfac...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 111, "title": "Full Stack Engineer", "company": "Convergent", "location": "US National", "salaryText": "100,000 - 250,000 USD Annually", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=e85a4e44-007d-4615-82ed-33269c7d1414&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://apply.workable.com/j/EFD3AF51A4", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Architect and build end-to-end features while designing core application systems for real-time simulations. Maintain backend services and APIs, and optimize performance for reliable user experiences in a fast-paced en...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 109, "title": "3D Artist", "company": "G2i", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=88665e04-1166-4a48-945b-b098c1279b2d&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/g2i/49e0db02-0348-4baf-b49c-1581e29d225b", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Design and maintain real-time 3D experiences and animations within a mobile application, optimize performance for mobile devices, and collaborate with teams to prototype and enhance interactive features. Job Title: 3D...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 108, "title": "Staff Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=85bdaacc-a579-47a2-962b-13ad5222b973&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4231686005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive project delivery by leading teams and building solutions, partner with clients to understand their needs, define product requirements, and foster an effective engineering culture throughout the development proce...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 107, "title": "Staff Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=178efabe-db21-48fb-9a20-df6683ddc90d&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4231685005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive project delivery from inception to user implementation, partner with clients to meet business goals, define product requirements, and foster a healthy engineering culture through effective collaboration and lead...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 106, "title": "Staff Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=0347614b-f44a-4a89-bff8-6a2c6dccc8a8&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4231178005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive end-to-end product delivery by guiding project execution, partnering with clients to meet business goals, defining product requirements, and fostering a strong engineering culture through collaboration and effec...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 105, "title": "Staff Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=d776a070-6767-455f-b5dd-65f177762cd4&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4027917005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive end-to-end product delivery by guiding project execution, partnering with clients to meet business goals, defining product requirements, and fostering a healthy engineering culture within a dynamic team environm...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 100, "title": "Staff Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=194240e6-4fe5-4cce-b5d0-6ad20b403b1d&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4238064005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive end-to-end product delivery while leading projects, defining product requirements, and collaborating with clients to achieve business goals. Support the development of a healthy engineering culture within a dyna...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 95, "title": "Strategic Platform Engineer - Data and Integrations", "company": "Bloomreach", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=b8fb3003-d823-4ee5-85dc-fa3d1a4ee9c5&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/bloomreach/jobs/7422349", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Own data integrity in Salesforce, engineer a centralized context retrieval system for GTM agents, and optimize performance to ensure fast, relevant responses while maintaining data freshness and reliability. Title: St...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 92, "title": "AI Product Engineer, Full-Stack - Prototyping Focus", "company": "Cydcor", "location": "Agoura Hills, CA", "salaryText": "", "postedAt": "5 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=69a6d928-64b6-4013-86bf-1dae5f524253&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://apply.workable.com/j/CC1A289F54", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead the design and development of AI tools, implement LLM-powered features, manage database architecture, and mentor teammates on engineering standards while ensuring reliable and efficient AI systems. Title: AI Prod...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 91, "title": "Staff Full Stack Engineer, GTM Systems", "company": "Upside Services, Inc.", "location": "Austin, TX, Chicago, IL, Washington, DC, New York City, NY", "salaryText": "214,000 - 245,000 USD Annually", "postedAt": "5 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=0a4abde2-1ddc-4a9d-a780-42159cdaccc6&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/upside/b586cbe0-5cbb-4e14-8ce0-c8463b936c86", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Design and build AI-native systems to enhance revenue team operations, translate business workflows into scalable solutions, and continuously improve application performance while owning systems end-to-end. Title: Sta...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 130, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=25577b49-e829-4de5-a2c3-8c3c2dab3b5a&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564842", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to drive platform simplification, manage multiple squads, and partner with stakeholders. Represent engineering in executive planning, ensuring feature delivery during critical sales periods. Tit...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 129, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=ecc7733d-6f25-488d-b89b-4dfdf9f855e6&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564827", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to deliver critical features during sales periods, drive platform simplification, and build high-performing teams while collaborating with cross-functional stakeholders to enhance business outco...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 128, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=b8eaea77-25f7-4301-b987-907027f390ef&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/3989504", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to deliver features during critical sales periods, drive platform simplification, and build high-performing teams while collaborating with cross-functional stakeholders for effective execution a...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 127, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=45f30b7e-47be-4bcf-b9fd-90eb1d6635ad&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564851", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to develop sales tools and AI-powered automation, while simplifying platforms and enhancing cross-functional collaboration to drive customer acquisition and onboarding efficiency. Title: Directo...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 126, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=cee09323-f751-4944-8165-f2331829678c&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564841", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to deliver critical features, drive platform simplification, and foster cross-functional partnerships, while actively participating in architecture and technical decisions to enhance business pe...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 125, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=6afbd72f-8ca2-47c0-b005-2da671322a02&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564836", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to deliver critical features, drive platform simplification, and enhance sales tools while fostering cross-functional partnerships to improve customer onboarding and conversion efficiency. Title...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 124, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=9788e64f-2958-43ca-92cf-0a5d52ed398a&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564835", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead multiple engineering teams to build high-performing systems, drive platform simplification, and collaborate with cross-functional partners, ensuring consistent feature delivery during critical sales periods and e...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 123, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=80dbeca3-3269-453e-b89d-851df9b7010f&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564847", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to deliver critical features during peak sales periods, simplify platforms to meet business needs, and foster cross-functional partnerships while ensuring high performance and accountability in...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 122, "title": "Director of Engineering", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=dc3c1f41-da10-4db5-ab47-a3dbe065ded5&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://job-boards.greenhouse.io/nerdy/jobs/7564845", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to develop sales tools and AI-powered automation, drive platform simplification, and establish cross-functional partnerships, ensuring successful feature delivery and high-performance team reten...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 121, "title": "Data Engineer", "company": "HeadQuarters Cannabis Staffing and Services", "location": "Serbia, Colombia", "salaryText": "", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=dcebfa53-19b3-479d-a8fe-83bd418a37e9&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://apply.workable.com/j/4ADDF0E51A", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Build and maintain API integrations, ingest and normalize data from external sources, and create reliable base tables for reporting while collaborating closely with cross-functional teams to ensure data accuracy and o...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 120, "title": "(Fluent Ukrainian) Full-Stack Web Engineer (Node.js + Vue, SvelteKit)", "company": "SupportYourApp", "location": "100% Remote", "salaryText": "", "postedAt": "12 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=e3657412-cd54-4057-bb4d-a590d61c877a&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://apply.workable.com/j/10022E9EC4", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Maintain and develop the main website while improving functionality related to trials and checkout flows. Collaborate with marketing to launch campaigns and enhance website performance through code quality improvement...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 119, "title": "(Fluent Ukrainian) Full-Stack Web Engineer (Node.js + Vue, SvelteKit)", "company": "SupportYourApp", "location": "Lublin, LU, Poland, Warsaw, Poland, Krakow, Poland, Wroclaw, Poland", "salaryText": "", "postedAt": "12 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=539028ae-bdd6-476b-af01-13971482a6b4&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://apply.workable.com/j/261D3E37AF", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Maintain and enhance the main website while developing new functionalities for trials and checkout flows. Collaborate with marketing to launch product campaigns and improve overall website performance and code quality...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 118, "title": "Full-Stack Web Engineer (Node.js + Vue - SvelteKit)", "company": "SupportYourApp", "location": "100% Remote", "salaryText": "", "postedAt": "12 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=a6625bfa-6d16-4d31-96fc-da452633bf6b&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://apply.workable.com/j/252CA8726A", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Maintain and enhance the main website, develop new functionalities for trials and checkout flows, and collaborate with marketing to launch product campaigns while ensuring website performance and code quality. Title:...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 117, "title": "Full-Stack Web Engineer (Node.js + Vue - SvelteKit)", "company": "SupportYourApp", "location": "Warsaw, PL-MZ, Poland", "salaryText": "", "postedAt": "12 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=cc2df8e9-5842-4070-ac3e-318d63407aa8&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://apply.workable.com/j/2BFF85EEC4", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Maintain and enhance the company\u2019s website, develop new functionalities for trials and checkout flows, and collaborate with marketing teams to launch campaigns and improve overall website performance. Title: (fluent U...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 116, "title": "(Fluent Ukrainian) Full-Stack Web Engineer (Node.js + Vue, SvelteKit)", "company": "SupportYourApp", "location": "100% Remote", "salaryText": "", "postedAt": "12 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=cde6916a-9545-4df4-87bb-2372d39367ad&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://apply.workable.com/j/470BE55BDF", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Maintain and enhance the main website while developing new features related to trials and checkout flows. Collaborate with marketing to launch campaigns and improve website performance and code quality. Title: (fluent...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 115, "title": "Director of Engineering - AI-Native", "company": "Nerdy, Inc.", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=252c320c-37b4-486f-a869-8616d3fb80d8&matchId=b3590f67-c3cd-4f14-9cce-a7e3be32c6c0&score=12.035937", "applicationUrl": "https://boards.greenhouse.io/nerdy/jobs/3989504", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead engineering teams to deliver critical sales features, simplify platform complexities, and enhance cross-functional collaboration while fostering high performance and driving measurable improvements in conversion...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:23"}, {"id": 76, "title": "Customer Solution Architect Team Lead", "company": "Supabase", "location": "US National", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=5810b36d-5abf-4061-a2e9-806c6fdeab38&matchId=c15de888-4132-4d2d-b92b-08aa5de1abf3&score=114.38159", "applicationUrl": "https://jobs.ashbyhq.com/supabase/66bab062-b769-43cf-ac3c-a2630257624c", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead a team of Customer Solutions Architects to drive customer success, develop onboarding strategies, and ensure technical excellence while collaborating across departments to enhance customer engagement and adoption...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:42:21"}, {"id": 110, "title": "Senior Product Marketing Manager - Developer Platform API", "company": "Brave Software", "location": "San Francisco, CA", "salaryText": "150,000 - 200,000 USD Annually", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=5ecae88e-f102-4bb0-8854-ac62524ad5bd&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/brave/jobs/7605223", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Title: Senior Product Marketing Manager - Developer Platform API Location: San Francisco United States Job Description: Senior Product Marketing Manager - Developer Platform & API Team: Search & AI Platform | Location...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 104, "title": "Senior Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=98294e10-d8e1-4b4f-a19b-0d415fe4f0d2&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4235634005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive end-to-end software implementations, engage with clients to understand goals, inform product requirements, and provide mentorship while collaborating with teams to build innovative solutions in a dynamic environ...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 102, "title": "Senior Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=62203a56-2d3e-4046-a7fc-01b8bfe36c69&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4238065005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive end-to-end implementations, engage with clients to understand business goals, inform product requirements with technical designs, and perform code reviews while providing mentorship in areas of expertise. Senior...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 101, "title": "Senior Software Engineer", "company": "Fluxon Apps", "location": "100% Remote", "salaryText": "", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=d0f25aa4-3c1d-4746-9d9f-3d3950290234&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://job-boards.greenhouse.io/fluxon/jobs/4021470005", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Drive end-to-end software implementations, engage with clients to understand goals, inform product requirements, and provide mentorship in areas of expertise while collaborating with a dynamic team to deliver innovati...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 97, "title": "Senior Site Reliability Engineer", "company": "Finite State", "location": "US National", "salaryText": "215,000 - 250,000 USD Annually", "postedAt": "2 weeks ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=1ad82a6d-3b2e-4cce-9890-1640401fd6fb&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://boards.greenhouse.io/finitestate/jobs/5811244004", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Lead the design of telemetry pipelines and observability frameworks, establish operational excellence through effective incident management, and drive AI-assisted infrastructure automation to enhance system reliabilit...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 94, "title": "Senior Business Analyst", "company": "CertifID", "location": "Austin, TX, Grand Rapids, MI", "salaryText": "", "postedAt": "11 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=cdd5f1ad-d8ff-463a-96ae-5c7832a12e83&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://jobs.lever.co/certifid/d43a6f39-ef99-4f1b-8b29-53e79d7f62a8", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Senior Business Analyst Remote / Austin, TX / Grand Rapids, MI Finance/Accounting /Full-time /Remote Cybercrime is rising, reaching record highs in 2024. According to the FBI's IC3 report total losses exceeded $16 bil...", "remoteBucket": "onsite", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 93, "title": "Senior Full-Stack Software Engineer", "company": "Finite State", "location": "US National", "salaryText": "181,000 - 270,000 USD Annually", "postedAt": "30+ days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "error", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=d68c9d25-0795-411f-b463-f48fe2eb164e&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://boards.greenhouse.io/finitestate/jobs/5740621004", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Design and implement secure, scalable web applications using Next.js and PostgreSQL, collaborate with product teams to translate customer needs into features, and embed security best practices throughout the developme...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}, {"id": 90, "title": "Senior AI Full Stack Engineer", "company": "AmeriSave Mortgage Corporation", "location": "US National", "salaryText": "150,000 - 200,000 USD Annually", "postedAt": "3 days ago", "score": null, "fitReason": "", "status": "discovered", "applicationStatus": "applied", "jobUrl": "https://www.flexjobs.com/HostedJob.aspx?id=6c997a60-6c65-451e-875c-b4488f9e6c0c&matchId=ef8ef0ce-19d0-4307-8e88-ef08d5d33fa8&score=114.38159", "applicationUrl": "https://jobs.jobvite.com/amerisavecareers/job/oD0RzfwN", "hasApplyUrl": true, "isExpertApply": true, "hasDetails": true, "summary": "Design, develop, and maintain scalable web applications while collaborating with cross-functional teams to deliver new features. Optimize applications for performance and integrate AI services into full-stack solution...", "remoteBucket": "remote", "discoveredAt": "2026-03-27 21:44:19"}]</script>
+  <script>
+    const jobs = JSON.parse(document.getElementById("jobs-data").textContent);
+    const elements = {
+      stats: document.getElementById("stats"),
+      jobsGrid: document.getElementById("jobsGrid"),
+      emptyState: document.getElementById("emptyState"),
+      resultCount: document.getElementById("resultCount"),
+      searchInput: document.getElementById("searchInput"),
+      minScore: document.getElementById("minScore"),
+      sortBy: document.getElementById("sortBy"),
+      remoteOnly: document.getElementById("remoteOnly"),
+      applyOnly: document.getElementById("applyOnly"),
+    };
+
+    function scoreLabel(score) {
+      if (score === null || score === undefined) return "n/a";
+      return Math.round(score).toString();
+    }
+
+    function scoreClass(score) {
+      if (score === null || score === undefined) return "";
+      if (score >= 80) return "high";
+      if (score < 60) return "low";
+      return "";
+    }
+
+    function jobMatches(job) {
+      const query = elements.searchInput.value.trim().toLowerCase();
+      const minScore = elements.minScore.value ? Number(elements.minScore.value) : null;
+      const haystack = [
+        job.title,
+        job.company,
+        job.location,
+        job.fitReason,
+        job.summary,
+        job.applicationStatus,
+      ].join(" ").toLowerCase();
+
+      if (query && !haystack.includes(query)) return false;
+      if (minScore !== null && (job.score === null || job.score < minScore)) return false;
+      if (elements.remoteOnly.checked && job.remoteBucket !== "remote") return false;
+      if (elements.applyOnly.checked && !job.hasApplyUrl) return false;
+      return true;
+    }
+
+    function sortJobs(list) {
+      const mode = elements.sortBy.value;
+      const sorted = [...list];
+      sorted.sort((a, b) => {
+        if (mode === "recent") return String(b.discoveredAt).localeCompare(String(a.discoveredAt));
+        if (mode === "company") return a.company.localeCompare(b.company);
+        if (mode === "title") return a.title.localeCompare(b.title);
+        const aScore = a.score === null ? -1 : a.score;
+        const bScore = b.score === null ? -1 : b.score;
+        if (bScore !== aScore) return bScore - aScore;
+        return String(b.discoveredAt).localeCompare(String(a.discoveredAt));
+      });
+      return sorted;
+    }
+
+    function makeStat(label, value) {
+      const wrap = document.createElement("div");
+      wrap.className = "stat";
+
+      const labelNode = document.createElement("span");
+      labelNode.className = "stat-label";
+      labelNode.textContent = label;
+      wrap.appendChild(labelNode);
+
+      const valueNode = document.createElement("span");
+      valueNode.className = "stat-value";
+      valueNode.textContent = value;
+      wrap.appendChild(valueNode);
+      return wrap;
+    }
+
+    function renderStats(filteredJobs) {
+      const remoteJobs = filteredJobs.filter(job => job.remoteBucket === "remote").length;
+      const applyJobs = filteredJobs.filter(job => job.hasApplyUrl).length;
+      const strongJobs = filteredJobs.filter(job => job.score !== null && job.score >= 80).length;
+
+      elements.stats.replaceChildren(
+        makeStat("Visible Jobs", String(filteredJobs.length)),
+        makeStat("Remote", String(remoteJobs)),
+        makeStat("Ready To Apply", String(applyJobs)),
+        makeStat("Score 80+", String(strongJobs)),
+      );
+    }
+
+    function makeTag(text, extraClass = "") {
+      const tag = document.createElement("span");
+      tag.className = `tag ${extraClass}`.trim();
+      tag.textContent = text;
+      return tag;
+    }
+
+    function makeButton(text, href, primary = false) {
+      const link = document.createElement("a");
+      link.className = primary ? "button primary" : "button";
+      link.textContent = text;
+      link.href = href;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      return link;
+    }
+
+    function renderCard(job) {
+      const card = document.createElement("article");
+      card.className = "job-card";
+
+      const top = document.createElement("div");
+      top.className = "job-card-top";
+
+      const titleWrap = document.createElement("div");
+      const idNode = document.createElement("p");
+      idNode.className = "job-id";
+      idNode.textContent = `Job #${job.id}`;
+      titleWrap.appendChild(idNode);
+
+      const title = document.createElement("h2");
+      title.className = "job-title";
+      title.textContent = job.title;
+      titleWrap.appendChild(title);
+
+      const company = document.createElement("p");
+      company.className = "job-company";
+      company.textContent = job.company;
+      titleWrap.appendChild(company);
+
+      const score = document.createElement("div");
+      score.className = `score-pill ${scoreClass(job.score)}`.trim();
+      score.textContent = `Score ${scoreLabel(job.score)}`;
+
+      top.appendChild(titleWrap);
+      top.appendChild(score);
+      card.appendChild(top);
+
+      const meta = document.createElement("p");
+      meta.className = "meta";
+      const metaParts = [job.location];
+      if (job.salaryText) metaParts.push(job.salaryText);
+      if (job.postedAt) metaParts.push(`Posted ${job.postedAt}`);
+      meta.textContent = metaParts.join("  •  ");
+      card.appendChild(meta);
+
+      const tags = document.createElement("div");
+      tags.className = "tags";
+      tags.appendChild(makeTag(job.remoteBucket, job.remoteBucket));
+      if (job.isExpertApply) tags.appendChild(makeTag("expertapply", "apply"));
+      if (job.hasApplyUrl) tags.appendChild(makeTag("apply link", "apply"));
+      if (job.hasDetails) tags.appendChild(makeTag("details saved"));
+      if (job.applicationStatus) tags.appendChild(makeTag(job.applicationStatus, "status"));
+      card.appendChild(tags);
+
+      if (job.fitReason) {
+        const reason = document.createElement("p");
+        reason.className = "fit-reason";
+        const label = document.createElement("strong");
+        label.textContent = "Why it fits: ";
+        reason.appendChild(label);
+        reason.append(job.fitReason);
+        card.appendChild(reason);
+      }
+
+      if (job.summary) {
+        const summary = document.createElement("p");
+        summary.className = "summary";
+        const label = document.createElement("strong");
+        label.textContent = "Summary: ";
+        summary.appendChild(label);
+        summary.append(job.summary);
+        card.appendChild(summary);
+      }
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+      if (job.hasApplyUrl) actions.appendChild(makeButton("Apply", job.applicationUrl, true));
+      actions.appendChild(makeButton("Open FlexJobs", job.jobUrl));
+      card.appendChild(actions);
+
+      return card;
+    }
+
+    function render() {
+      const visibleJobs = sortJobs(jobs.filter(jobMatches));
+      renderStats(visibleJobs);
+      elements.resultCount.textContent = `${visibleJobs.length} of ${jobs.length} jobs shown`;
+      elements.jobsGrid.replaceChildren(...visibleJobs.map(renderCard));
+      elements.emptyState.hidden = visibleJobs.length !== 0;
+      elements.jobsGrid.hidden = visibleJobs.length === 0;
+    }
+
+    elements.searchInput.addEventListener("input", render);
+    elements.minScore.addEventListener("change", render);
+    elements.sortBy.addEventListener("change", render);
+    elements.remoteOnly.addEventListener("change", render);
+    elements.applyOnly.addEventListener("change", render);
+
+    render();
+  </script>
+</body>
+</html>

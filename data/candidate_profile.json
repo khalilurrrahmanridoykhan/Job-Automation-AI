@@ -1,0 +1,167 @@
+{
+  "name": "KHALILUR RAHMAN RIDOY KHAN",
+  "phone": "+8801976848561 45",
+  "email": "khalilurrahmanridoykhan@gmail.com",
+  "summary": "Data analyst with 1 year of dedicated experience and 4+ years in software engineering, specializing in Python, R, and SQL analysis, dashboarding, and ETL. Experienced in community data collection and geospatial reporting for public health programs.",
+  "years_experience": 5,
+  "focus_areas": [
+    "Analysis",
+    "Libraries",
+    "Data Engineering",
+    "Other"
+  ],
+  "core_competencies": [
+    "Analysis",
+    "Libraries",
+    "Data Engineering",
+    "Other",
+    "Python and SQL analysis",
+    "Dashboard development",
+    "ETL and data cleaning",
+    "Automated reporting",
+    "Geospatial and field-data workflows"
+  ],
+  "skills": [
+    "BI Tools",
+    "Python",
+    "R",
+    "SQL",
+    "Excel",
+    "Pandas",
+    "NumPy",
+    "Matplotlib",
+    "Seaborn",
+    "Scikit-learn",
+    "Tableau",
+    "Power BI",
+    "ETL",
+    "Data Cleaning",
+    "Data Warehousing",
+    "Statistical Analysis",
+    "Data Visualization",
+    "Git",
+    "Dashboarding",
+    "Geospatial Reporting",
+    "Public Health Reporting"
+  ],
+  "links": {
+    "website": "https://gmail.com",
+    "github": "https://github.com/khalilurrrahmanridoykhan"
+  },
+  "languages": [],
+  "target_roles": [
+    "Business Intelligence Analyst",
+    "Data Analyst",
+    "BI Developer",
+    "Data Engineer",
+    "Public Health Data Analyst",
+    "Analytics Engineer",
+    "ETL Developer",
+    "Geospatial Data Analyst"
+  ],
+  "experience": [
+    {
+      "employer": "GMGI Solutions Ltd., Dhaka, Bangladesh",
+      "title": "IT Team Leader",
+      "date_range": "Present",
+      "highlights": [
+        "Conduct advanced data analysis using Python, R, and BI tools to support decision-making.",
+        "Build dashboards and automated reports for business and operational teams.",
+        "Design and optimize data pipelines and ETL workflows.",
+        "Improve data quality through validation rules, monitoring, and standardized metrics.",
+        "Partner with stakeholders to define KPIs and translate needs into analyses."
+      ]
+    },
+    {
+      "employer": "GroupMappers (MORU Project), Bangladesh",
+      "title": "Team Lead - Community Data Collection Platform",
+      "date_range": "Project-based",
+      "highlights": [
+        "Led development of a community data collection and village mapping platform.",
+        "Designed field data workflows for surveys, validation, and standardization.",
+        "Implemented geospatial data structures to support micro-planning.",
+        "Coordinated field teams and data reviewers to ensure clean, reliable datasets.",
+        "Delivered geospatial insights for public health planning and monitoring."
+      ]
+    },
+    {
+      "employer": "Freelance Projects",
+      "title": "Data Analyst",
+      "date_range": "Ongoing",
+      "highlights": [
+        "Performed data cleaning, visualization, and trend analysis using Python and R.",
+        "Delivered actionable insights that influenced business decisions.",
+        "Built SQL queries and automated reports to reduce manual analysis time."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "NMCP Map Portal (NMEP)",
+      "description": "Village-level visualization and program monitoring for the National Malaria Elimination Programme.",
+      "links": [
+        "Live Demo"
+      ]
+    },
+    {
+      "title": "NMCP Data Collection Portal (NMEP)",
+      "description": "",
+      "links": [
+        "Live Demo"
+      ]
+    },
+    {
+      "title": "Developed NMEP data collection forms and workflows to capture community and field data for malaria surveillance.",
+      "description": "Data Visualization Dashboard Interactive dashboard for analysis and visualization using ReactJS, D3.js, and Chart.js.",
+      "links": [
+        "GitHub"
+      ]
+    },
+    {
+      "title": "Machine Learning Models",
+      "description": "Collection of classification, regression, and clustering models with deployment examples.",
+      "links": [
+        "GitHub"
+      ]
+    }
+  ],
+  "education": [
+    "Bachelor of Computer Science, East West University",
+    "Higher Secondary Certificate (HSC), Donia College",
+    "2021 - 2025",
+    "2018 - 2020"
+  ],
+  "certifications": [
+    "Google Data Analytics Professional Certificate Coursera \u2014 Verify at: coursera.org",
+    "Oct 2025",
+    "Microsoft Applied Skills: Build a natural language processing solution with Azure AI Language Oct 2025 Credential ID: E0CE29FDF8CF8884 \u2014 Verify at: Microsoft Learn",
+    "Google Career Certificates - Individual Courses",
+    "Oct 2025 Project Management Foundations, Data Preparation, Data Visualization, R Programming, and Capstone Case Study."
+  ],
+  "leadership": [
+    "Led a team of 20 developers to build an enterprise resource planning (ERP) system.",
+    "Managed cross-functional teams for large-scale mobile and web delivery.",
+    "Mentored junior developers and standardized engineering workflows."
+  ],
+  "application_answers": {
+    "professional_summary": "Data analyst with 1 year of dedicated experience and 4+ years in software engineering, specializing in Python, R, and SQL analysis, dashboarding, and ETL. Experienced in community data collection and geospatial reporting for public health programs.",
+    "top_strengths": [
+      "Python and SQL analysis",
+      "Dashboard development",
+      "ETL and data cleaning",
+      "Automated reporting",
+      "Geospatial and field-data workflows"
+    ],
+    "preferred_roles": [
+      "Business Intelligence Analyst",
+      "Data Analyst",
+      "BI Developer",
+      "Data Engineer",
+      "Public Health Data Analyst",
+      "Analytics Engineer",
+      "ETL Developer",
+      "Geospatial Data Analyst"
+    ],
+    "resume_path": "RIDOYKHAN_CV.pdf"
+  }
+}
