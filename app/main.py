@@ -44,6 +44,7 @@ def _application_defaults(settings: Settings) -> dict[str, object]:
     return {
         "linkedin_url": settings.candidate_linkedin_url,
         "github_url": settings.candidate_github_url,
+        "english_level": settings.candidate_english_level,
         "middle_name": settings.candidate_middle_name,
         "account_login": settings.candidate_account_login,
         "account_password": settings.candidate_account_password,

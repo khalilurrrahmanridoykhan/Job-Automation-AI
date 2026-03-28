@@ -1,18 +1,20 @@
 {
   "name": "KHALILUR RAHMAN RIDOY KHAN",
-  "phone": "+8801976848561 45",
+  "phone": "+8801976848561",
   "email": "khalilurrahmanridoykhan@gmail.com",
   "summary": "Data analyst with 1 year of dedicated experience and 4+ years in software engineering, specializing in Python, R, and SQL analysis, dashboarding, and ETL. Experienced in community data collection and geospatial reporting for public health programs.",
   "years_experience": 5,
   "focus_areas": [
     "Analysis",
     "Libraries",
+    "BI Tools",
     "Data Engineering",
     "Other"
   ],
   "core_competencies": [
     "Analysis",
     "Libraries",
+    "BI Tools",
     "Data Engineering",
     "Other",
     "Python and SQL analysis",
@@ -22,7 +24,6 @@
     "Geospatial and field-data workflows"
   ],
   "skills": [
-    "BI Tools",
     "Python",
     "R",
     "SQL",
@@ -45,14 +46,17 @@
     "Public Health Reporting"
   ],
   "links": {
-    "website": "https://gmail.com",
-    "github": "https://github.com/khalilurrrahmanridoykhan"
+    "website": "https://krrkhan.com",
+    "github": "https://github.com/khalilurrrahmanridoykhan",
+    "linkedin": "https://linkedin.com/in/khalilurrrahmanridoykhan"
   },
-  "languages": [],
+  "languages": [
+    "English"
+  ],
   "target_roles": [
-    "Business Intelligence Analyst",
     "Data Analyst",
     "BI Developer",
+    "Business Intelligence Analyst",
     "Data Engineer",
     "Public Health Data Analyst",
     "Analytics Engineer",
@@ -63,7 +67,7 @@
     {
       "employer": "GMGI Solutions Ltd., Dhaka, Bangladesh",
       "title": "IT Team Leader",
-      "date_range": "Present",
+      "date_range": "Jan 2025 - Present",
       "highlights": [
         "Conduct advanced data analysis using Python, R, and BI tools to support decision-making.",
         "Build dashboards and automated reports for business and operational teams.",
@@ -105,14 +109,14 @@
     },
     {
       "title": "NMCP Data Collection Portal (NMEP)",
-      "description": "",
+      "description": "Developed NMEP data collection forms and workflows to capture community and field data for malaria surveillance.",
       "links": [
         "Live Demo"
       ]
     },
     {
-      "title": "Developed NMEP data collection forms and workflows to capture community and field data for malaria surveillance.",
-      "description": "Data Visualization Dashboard Interactive dashboard for analysis and visualization using ReactJS, D3.js, and Chart.js.",
+      "title": "Data Visualization Dashboard",
+      "description": "Interactive dashboard for analysis and visualization using ReactJS, D3.js, and Chart.js.",
       "links": [
         "GitHub"
       ]
@@ -153,15 +157,15 @@
       "Geospatial and field-data workflows"
     ],
     "preferred_roles": [
-      "Business Intelligence Analyst",
       "Data Analyst",
       "BI Developer",
+      "Business Intelligence Analyst",
       "Data Engineer",
       "Public Health Data Analyst",
       "Analytics Engineer",
       "ETL Developer",
       "Geospatial Data Analyst"
     ],
-    "resume_path": "RIDOYKHAN_CV.pdf"
+    "resume_path": "/Users/khalilur/Documents/FlexJob-Automation/RIDOYKHAN_CV.pdf"
   }
 }

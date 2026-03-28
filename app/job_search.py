@@ -416,9 +416,19 @@ def _is_access_denied_page(page) -> bool:
     try:
         body_text = page.locator("body").inner_text(timeout=2000).lower()
     except Exception:
+        body_text = ""
+
+    if "access denied" in body_text or "you don't have permission to access" in body_text:
+        return True
+    if "powered and protected by" in body_text and "akamai" in body_text:
+        return True
+
+    try:
+        html_text = page.content().lower()
+    except Exception:
         return False
 
-    return "access denied" in body_text or "you don't have permission to access" in body_text
+    return 'id="sec-if-cpt-container"' in html_text or "akamai" in html_text
 
 
 def _find_best_manual_capture_page(
@@ -541,8 +551,8 @@ def open_flexjobs_browser(settings: Settings) -> None:
         if sys.stdin.isatty():
             input("Press Enter after you finish logging in and want to close this browser session...")
         else:
-            print("Non-interactive session detected. Keeping the browser open for 120 seconds.")
-            page.wait_for_timeout(120000)
+            print("Non-interactive session detected. Keeping the browser open for 600 seconds.")
+            page.wait_for_timeout(600000)
 
         context.close()
 
@@ -1320,7 +1330,13 @@ def _dump_debug_artifacts(settings: Settings, page, slug: str) -> tuple[Path, Pa
 
 def _should_retry_collect_with_manual_session(error: Exception) -> bool:
     message = normalize_whitespace(str(error)).lower()
-    return "login page" in message or "login gate" in message or "access denied" in message
+    return (
+        "login page" in message
+        or "login gate" in message
+        or "access denied" in message
+        or "akamai" in message
+        or "challenge" in message
+    )
 
 
 def collect_jobs(
@@ -1354,7 +1370,13 @@ def collect_jobs(
                     "FlexJobs is showing a login gate. Run 'python3 -m app.main open-flexjobs' "
                     "and complete the login in the persistent browser profile first."
                 )
-            return _extract_job_candidates(current_page, title, limit_per_title)
+            jobs = _extract_job_candidates(current_page, title, limit_per_title)
+            if not jobs and _is_access_denied_page(current_page):
+                raise RuntimeError(
+                    "FlexJobs returned an Akamai or access challenge page. "
+                    "Open a manual browser session with 'python3 -m app.main open-flexjobs' and finish the challenge first."
+                )
+            return jobs
 
         for title in effective_titles:
             run_id = start_search_run(settings.jobs_db_path, title)

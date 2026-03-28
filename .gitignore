@@ -1,0 +1,6 @@
+.venv
+.env
+RIDOYKHAN_CV.pdf
+data
+__pycache__/
+*.pyc

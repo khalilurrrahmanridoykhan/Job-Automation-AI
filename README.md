@@ -74,7 +74,7 @@ python3 -m app.main open-flexjobs
 Collect jobs using the saved browser profile:
 
 ```bash
-python3 -m app.main collect-jobs --limit 10
+python3 -m app.main collect-jobs --limit 10 --disable-anywhere-us
 ```
 
 If FlexJobs blocks automated login, run `open-flexjobs` first and complete the login manually in the persistent profile.
@@ -82,7 +82,7 @@ If FlexJobs blocks automated login, run `open-flexjobs` first and complete the l
 If FlexJobs blocks the automated search request with an access-denied page, use the manual capture flow instead:
 
 ```bash
-python3 -m app.main collect-manual-page --title "Senior Auditor" --limit 10
+python3 -m app.main collect-manual-page --title "Data Analyst" --limit 10
 ```
 
 That command attaches to a normal Google Chrome window with a separate local profile, lets you search manually in the browser, and then parses the results page after you press Enter in the terminal.
@@ -107,23 +107,23 @@ Show a filtered shortlist of enriched jobs and optionally export it to markdown:
 python3 -m app.main shortlist-jobs --limit 15 --min-score 75 --out data/shortlist.md
 ```
 
-You can also narrow the shortlist with a text filter such as `--query auditor`.
+You can also narrow the shortlist with a text filter such as `--query data analyst`.
 
 Prepare saved application packets from enriched jobs:
 
 ```bash
-python3 -m app.main prepare-application --limit 5 --min-score 80 --query auditor
+python3 -m app.main prepare-application --limit 5 --min-score 80 --query data
 ```
 
 That command writes JSON and markdown packets under `data/applications/` and stores the prepared payload in the SQLite `applications` table for later review or automation.
 
-Build a strict remote-U.S. daily application queue and optionally prepare missing packets:
+Build a strict remote application queue and optionally prepare missing packets:
 
 ```bash
-python3 -m app.main daily-queue --limit 50 --prepare-missing
+python3 -m app.main daily-queue --region bangladesh --limit 50 --prepare-missing
 ```
 
-That command ranks the current database for remote U.S. jobs only, prioritizes easier apply flows, writes reports to `data/daily-queue.md` and `data/daily-queue.json`, and can auto-create missing application packets for queued jobs.
+That command ranks the current database for region-eligible 100% remote jobs, prioritizes easier apply flows, writes reports to `data/daily-queue.md` and `data/daily-queue.json`, and can auto-create missing application packets for queued jobs.
 
 List prepared application rows:
 

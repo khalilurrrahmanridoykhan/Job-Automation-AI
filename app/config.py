@@ -76,6 +76,7 @@ class Settings:
     flexjobs_manual_chrome_cdp_port: int
     candidate_linkedin_url: str | None
     candidate_github_url: str | None
+    candidate_english_level: str | None
     candidate_middle_name: str | None
     candidate_account_login: str | None
     candidate_account_password: str | None
@@ -135,6 +136,7 @@ class Settings:
             flexjobs_manual_chrome_cdp_port=int(os.getenv("FLEXJOBS_MANUAL_CHROME_CDP_PORT", "9222")),
             candidate_linkedin_url=os.getenv("CANDIDATE_LINKEDIN_URL"),
             candidate_github_url=os.getenv("CANDIDATE_GITHUB_URL"),
+            candidate_english_level=os.getenv("CANDIDATE_ENGLISH_LEVEL"),
             candidate_middle_name=os.getenv("CANDIDATE_MIDDLE_NAME"),
             candidate_account_login=os.getenv("CANDIDATE_ACCOUNT_LOGIN"),
             candidate_account_password=os.getenv("CANDIDATE_ACCOUNT_PASSWORD"),

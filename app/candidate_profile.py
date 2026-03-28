@@ -97,6 +97,8 @@ def _extract_contact(preamble: list[str]) -> tuple[str | None, str | None]:
     phone: str | None = None
     for match in PHONE_CANDIDATE_RE.finditer(joined):
         candidate = match.group(0).strip()
+        if candidate.startswith("+"):
+            candidate = candidate.split()[0]
         digit_count = sum(char.isdigit() for char in candidate)
         if 8 <= digit_count <= 15:
             phone = candidate
@@ -109,19 +111,24 @@ def _extract_links(preamble: list[str]) -> dict[str, str]:
     joined = " ".join(preamble)
     links: dict[str, str] = {}
 
-    for match in URL_RE.finditer(joined):
-        value = match.group(0).strip().rstrip(".,")
-        lowered = value.lower()
-        if "@" in value:
-            continue
-        if "github.com" in lowered:
-            links.setdefault("github", value if value.startswith("http") else f"https://{value}")
-        elif "." in value and any(token in joined.lower() for token in ("website:", "portfolio:", value.lower())):
-            links.setdefault("website", value if value.startswith("http") else f"https://{value}")
+    website_match = re.search(r"(?:website|portfolio):\s*([^\s]+)", joined, re.IGNORECASE)
+    if website_match:
+        value = website_match.group(1).strip().rstrip(".,")
+        if "." in value:
+            links["website"] = value if value.startswith("http") else f"https://{value}"
 
-    github_handle_match = re.search(r"github:\s*([a-z0-9_.-]+)", joined, re.IGNORECASE)
-    if github_handle_match:
-        links.setdefault("github", f"https://github.com/{github_handle_match.group(1)}")
+    github_value_match = re.search(r"github:\s*([^\s]+)", joined, re.IGNORECASE)
+    if github_value_match:
+        github_value = github_value_match.group(1).strip().rstrip(".,")
+        if "github.com" in github_value.lower():
+            links["github"] = github_value if github_value.startswith("http") else f"https://{github_value}"
+        else:
+            links["github"] = f"https://github.com/{github_value}"
+    else:
+        for match in URL_RE.finditer(joined):
+            value = match.group(0).strip().rstrip(".,")
+            if "github.com" in value.lower():
+                links.setdefault("github", value if value.startswith("http") else f"https://{value}")
 
     return links
 
@@ -140,7 +147,7 @@ def _parse_skills(lines: list[str], summary: str) -> tuple[list[str], list[str]]
             continue
 
         word_count = len(line.split())
-        if word_count <= 4 and line == line.title():
+        if word_count <= 4:
             focus_areas.append(line)
             continue
 
@@ -168,6 +175,19 @@ def _looks_like_date_line(value: str) -> bool:
     return any(token in lowered for token in ("present", "ongoing", "project-based", "contract"))
 
 
+def _looks_like_date_fragment(value: str) -> bool:
+    stripped = value.strip().lower()
+    return bool(
+        re.fullmatch(
+            r"(?:"
+            r"(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\s+\d{4}"
+            r"|\d{4}"
+            r")",
+            stripped,
+        )
+    )
+
+
 def _split_employer_and_date(value: str) -> tuple[str | None, str | None]:
     for separator in (" – ", " — ", " - "):
         if separator not in value:
@@ -188,7 +208,7 @@ def _parse_experience_header(lines: list[str]) -> tuple[str | None, str | None, 
 
     for line in lines[1:]:
         split_employer, split_date = _split_employer_and_date(line)
-        if split_date is not None:
+        if split_date is not None and not _looks_like_date_fragment(split_employer or ""):
             if employer is None and split_employer:
                 employer = split_employer
             date_range = split_date
@@ -279,10 +299,14 @@ def _parse_projects(lines: list[str]) -> list[dict[str, Any]]:
         lowered = line.lower()
         if lowered in LINK_MARKERS:
             link_markers.append(line)
-            flush()
             continue
 
-        if buffer and line[0].isupper() and not line.endswith(".") and len(buffer) > 1:
+        if (
+            buffer
+            and buffer[-1].endswith(".")
+            and line[0].isupper()
+            and len(line.split()) <= 6
+        ):
             flush()
 
         buffer.append(line)
